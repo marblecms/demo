@@ -66,6 +66,9 @@ return [
     */
 
     'locale' => 'en',
+    'system_nodes_id' => 23,
+    'entry_node_id' => 1,
+    'uri_locale_prefix' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -155,7 +158,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Marble\Admin\MarbleServiceProvider::class,
     ],
 
     /*

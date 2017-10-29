@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b1485987e7c5949da82435d403e52e8",
+    "content-hash": "6800edcbaf7ba01d047e4cde7d84cea8",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -517,6 +517,36 @@
                 "storage"
             ],
             "time": "2017-08-06T17:41:04+00:00"
+        },
+        {
+            "name": "marblecms/admin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marblecms/admin.git",
+                "reference": "df76a9033685b211529da8955a09de5b3b74bc62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marblecms/admin/zipball/df76a9033685b211529da8955a09de5b3b74bc62",
+                "reference": "df76a9033685b211529da8955a09de5b3b74bc62",
+                "shasum": ""
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Marble\\Admin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Phillip Dornauer",
+                    "email": "office@hive.wien"
+                }
+            ],
+            "description": "Marble CMS Admin Package",
+            "time": "2017-10-29T15:36:26+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3187,7 +3217,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "marblecms/admin": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

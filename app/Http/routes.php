@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontController@redirectLocale');
+
+Route::get('/image/{filename}', 'ImageController@view');
+Route::get('/image/{width}/{height}/{filename}', 'ImageController@resize');
+Route::get('/image/{left}/{top}/{width}/{height}/{filename}', 'ImageController@crop');
+
+if (! App::runningInConsole()){
+    Marble\Admin\App\Helpers\RouteHelper::generate();
+}
