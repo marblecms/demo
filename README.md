@@ -11,17 +11,24 @@ That's it. Everything else runs inside the container.
 ## Quick Start
 
 ```bash
-git clone https://github.com/marblecms/demo
+git clone --recurse-submodules https://github.com/marblecms/demo
 cd demo
 cp .env.example .env
 docker compose up -d
 docker compose exec app php artisan marble:install
 ```
 
+> **Note:** `--recurse-submodules` is required. The Marble CMS package lives in a [separate repo](https://github.com/marblecms/admin) and is linked here as a Git submodule under `packages/marble/admin`. Without the flag that directory will be empty and the app won't boot.
+>
+> Already cloned without the flag? Run:
+> ```bash
+> git submodule update --init
+> ```
+
 Open [http://localhost:8080/admin](http://localhost:8080/admin) and log in with:
 
 ```
-Email:    admin@marble.test
+Email:    admin@admin
 Password: admin
 ```
 
