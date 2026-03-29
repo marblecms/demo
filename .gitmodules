@@ -1,0 +1,3 @@
+[submodule "packages/marble/admin"]
+	path = packages/marble/admin
+	url = https://github.com/marblecms/admin
