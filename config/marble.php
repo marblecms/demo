@@ -59,6 +59,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Nav Root Item ID
+    |--------------------------------------------------------------------------
+    | The item whose direct children form the main frontend navigation.
+    | Typically the "Content" folder (item 5 in a default install).
+    */
+    'nav_root_id' => 5,
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache TTL
     |--------------------------------------------------------------------------
     | How long to cache items (in seconds). Set to 0 to disable.
