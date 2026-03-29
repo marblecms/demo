@@ -1,5 +1,11 @@
 # Marble CMS — Demo App
 
+![Marble CMS](Screenshot1.png)
+![Marble CMS](Screenshot2.png)
+![Marble CMS](Screenshot3.png)
+![Marble CMS](Screenshot4.png)
+![Marble CMS](Screenshot5.png)
+
 This repository is a Laravel 13 application pre-configured to run the [Marble CMS](https://github.com/marblecms/admin) package. It serves as the reference implementation and development sandbox.
 
 ## Requirements
