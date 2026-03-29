@@ -98,7 +98,7 @@
     <div class="site-header-inner">
         <a href="/" class="site-logo">{{ config('app.name', 'Marble') }}</a>
         <nav class="site-nav">
-            @foreach(\Marble\Admin\Facades\Marble::nav(null, 1) as $navItem)
+            @foreach(\Marble\Admin\Facades\Marble::navigation(null, 1) as $navItem)
                 @php $navUrl = \Marble\Admin\Facades\Marble::url($navItem); @endphp
                 <a href="{{ $navUrl }}"
                    class="{{ ('/' . request()->path()) === $navUrl ? 'active' : '' }}">
