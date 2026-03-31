@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', $item->value('name') . ' — ' . config('app.name'))
+@section('title', $item->value('name'))
 
 @section('content')
 <div class="content-card">
@@ -26,8 +26,8 @@
         $children = \Marble\Admin\Facades\Marble::children($item);
     @endphp
 
-    {{-- Child page listing (e.g. for Startpage acting as homepage) --}}
-    @if($children->isNotEmpty() && !$item->value('content'))
+    {{-- Child page listing --}}
+    @if($children->isNotEmpty())
         <div class="child-grid">
             @foreach($children as $child)
                 <a href="{{ \Marble\Admin\Facades\Marble::url($child) }}" class="child-card">

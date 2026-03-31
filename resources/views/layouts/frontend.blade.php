@@ -1,9 +1,44 @@
+@php
+    $settings    = \Marble\Admin\Facades\Marble::settings();
+    $siteName    = $settings?->value('site_name') ?: config('app.name', 'Marble');
+    $tagline     = $settings?->value('tagline');
+    $copyright   = $settings?->value('copyright');
+    $metaDesc    = $settings?->value('meta_description');
+    $ogImage     = $settings?->value('og_image');
+    $robots      = $settings?->value('robots') ?: 'index, follow';
+    $instagram   = $settings?->value('instagram_url');
+    $facebook    = $settings?->value('facebook_url');
+    $linkedin    = $settings?->value('linkedin_url');
+
+    $titleTemplate = $settings?->value('meta_title_template') ?: '%title% | ' . $siteName;
+    $pageTitle     = str_replace('%title%', $__env->yieldContent('title', $siteName), $titleTemplate);
+    if ($__env->yieldContent('title') === '') {
+        $pageTitle = $siteName . ($tagline ? ' — ' . $tagline : '');
+    }
+
+    $logoVal = $settings?->value('logo');
+    $logoUrl = !empty($logoVal['url']) ? $logoVal['url'] : null;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', config('app.name'))</title>
+    <title>{{ $pageTitle }}</title>
+
+    @if($metaDesc)
+        <meta name="description" content="{{ $metaDesc }}">
+    @endif
+    <meta name="robots" content="{{ $robots }}">
+
+    @if($ogImage && !empty($ogImage['url']))
+        <meta property="og:image" content="{{ $ogImage['url'] }}">
+    @endif
+    <meta property="og:title" content="{{ $pageTitle }}">
+    @if($metaDesc)
+        <meta property="og:description" content="{{ $metaDesc }}">
+    @endif
+
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body {
@@ -38,8 +73,12 @@
             color: #fff;
             letter-spacing: .3px;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .site-logo:hover { text-decoration: none; color: #fff; }
+        .site-logo img { height: 28px; width: auto; display: block; }
 
         /* Nav */
         .site-nav {
@@ -89,6 +128,11 @@
             margin-top: 48px;
             border-top: 1px solid #e0e6ee;
         }
+        .site-footer a { color: #aaa; }
+        .site-footer a:hover { color: #888; }
+        .site-footer-social { display: flex; justify-content: center; gap: 16px; margin-bottom: 10px; }
+        .site-footer-social a { color: #bbb; font-size: 13px; }
+        .site-footer-social a:hover { color: #888; text-decoration: none; }
     </style>
     @stack('styles')
 </head>
@@ -96,7 +140,13 @@
 
 <header class="site-header">
     <div class="site-header-inner">
-        <a href="/" class="site-logo">{{ config('app.name', 'Marble') }}</a>
+        <a href="/" class="site-logo">
+            @if($logoUrl)
+                <img src="{{ $logoUrl }}" alt="{{ $siteName }}">
+            @else
+                {{ $siteName }}
+            @endif
+        </a>
         <nav class="site-nav">
             @foreach(\Marble\Admin\Facades\Marble::navigation(null, 1) as $navItem)
                 @php $navUrl = \Marble\Admin\Facades\Marble::url($navItem); @endphp
@@ -114,7 +164,17 @@
 </main>
 
 <footer class="site-footer">
-    &copy; {{ date('Y') }} {{ config('app.name', 'Marble') }} &mdash; Powered by <a href="https://github.com/marble-cms/marble">Marble CMS</a>
+    @if($instagram || $facebook || $linkedin)
+        <div class="site-footer-social">
+            @if($instagram) <a href="{{ $instagram }}" target="_blank" rel="noopener">Instagram</a> @endif
+            @if($facebook)  <a href="{{ $facebook }}"  target="_blank" rel="noopener">Facebook</a>  @endif
+            @if($linkedin)  <a href="{{ $linkedin }}"  target="_blank" rel="noopener">LinkedIn</a>  @endif
+        </div>
+    @endif
+    <div>
+        {{ $copyright ?: '&copy; ' . date('Y') . ' ' . $siteName }}
+        &mdash; Powered by <a href="https://github.com/marble-cms/marble">Marble CMS</a>
+    </div>
 </footer>
 
 @stack('scripts')

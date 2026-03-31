@@ -1,13 +1,13 @@
 @extends('layouts.frontend')
 
-@section('title', $item->value('name') . ' — ' . config('app.name'))
+@section('title', $item->value('name'))
 
 @section('content')
 <div class="content-card">
-    <h1>{{ $item->value('form_title') ?: $item->value('name') }}</h1>
+    <h1>{{ $item->value('subject') ?: $item->value('name') }}</h1>
 
-    @if($item->value('intro_text'))
-        <p class="intro">{{ $item->value('intro_text') }}</p>
+    @if($item->value('message'))
+        <p class="intro">{{ $item->value('message') }}</p>
     @endif
 
     <x-marble::marble-form :item="$item" :hide-submit="true">
