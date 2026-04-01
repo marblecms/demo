@@ -20,6 +20,8 @@
 
 This repository is a Laravel 13 application pre-configured to run the [Marble CMS](https://github.com/marblecms/admin) package. It serves as the reference implementation and development sandbox.
 
+**[→ Full Documentation](https://github.com/marblecms/admin/wiki)**
+
 ## Requirements
 
 - Docker & Docker Compose
