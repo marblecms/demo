@@ -225,6 +225,15 @@ docker compose exec app php artisan vendor:publish --tag=marble-assets --force
 # Process scheduled publish/expire times
 docker compose exec app php artisan marble:schedule-publish
 
+# Prune old activity log + notifications
+docker compose exec app php artisan marble:prune
+
+# Check workflow deadlines and notify overdue steps
+docker compose exec app php artisan marble:workflow-deadlines
+
+# Clear blueprint icon picker cache (auto-expires after 24h)
+docker compose exec app php artisan marble:clear-icon-cache
+
 # Interactive blueprint generator
 docker compose exec app php artisan marble:make-blueprint
 
