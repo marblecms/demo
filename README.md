@@ -18,7 +18,7 @@
 </tr>
 </table>
 
-This repository is a Laravel 13 application pre-configured to run the [Marble CMS](https://github.com/marblecms/admin) package. It serves as the reference implementation and development sandbox.
+A Laravel 13 application pre-configured to run the [Marble CMS](https://github.com/marblecms/admin) package. Use it as your starting point or development sandbox.
 
 **[→ Full Documentation](https://github.com/marblecms/admin/wiki)**
 
@@ -39,16 +39,16 @@ docker compose exec app php artisan migrate:fresh --seed
 docker compose exec app php artisan vendor:publish --tag=marble-assets
 ```
 
-> **Note:** `--recurse-submodules` is required. The Marble CMS package lives in a [separate repo](https://github.com/marblecms/admin) and is linked here as a Git submodule under `packages/marble/admin`. Without the flag that directory will be empty and the app won't boot.
+> **`--recurse-submodules` is required.** The Marble CMS package lives in a [separate repo](https://github.com/marblecms/admin) and is linked as a Git submodule under `packages/marble/admin`. Without it, that directory will be empty and the app won't boot.
 >
-> Already cloned without the flag? Run:
+> Already cloned without the flag?
 > ```bash
 > git submodule update --init
 > ```
 
-### Admin
+### Admin Panel
 
-Open [http://localhost:8080/admin](http://localhost:8080/admin) and log in with:
+[http://localhost:8080/admin](http://localhost:8080/admin)
 
 ```
 Email:    admin@admin
@@ -57,33 +57,29 @@ Password: admin
 
 ### Frontend
 
-Open [http://localhost:8080](http://localhost:8080) — a full demo site is pre-seeded with navigation, blog, product catalog, contact form, and a portal-authenticated intranet section.
+[http://localhost:8080](http://localhost:8080) — a full demo site with navigation, blog, products, contact form, and a portal-gated intranet.
 
-Portal user login (at [/portal/login](http://localhost:8080/portal/login)):
+Portal user ([/portal/login](http://localhost:8080/portal/login)):
 
 ```
 Email:    demo@demo.com
 Password: demo
 ```
 
-## Services
+### phpMyAdmin
 
-| Service     | URL                          |
-|-------------|------------------------------|
-| Admin panel | http://localhost:8080/admin  |
-| Frontend    | http://localhost:8080        |
-| phpMyAdmin  | http://localhost:8081        |
+[http://localhost:8081](http://localhost:8081) — host `db`, user/password `marble`.
 
-Database: host `db`, name `marble`, user `marble`, password `marble`.
+---
 
 ## Seeded Demo Content
 
-The seeder builds a full demo site across **12 blueprints** and **33 content items**:
+`migrate:fresh --seed` builds a complete site across **12 blueprints** and **33 items**:
 
 ```
 Root/
 ├── Content/
-│   └── Startpage  (home)                    ← site root, hero + feature grid
+│   └── Startpage  (home)                    ← site root
 │       ├── About Us  (simple_page)
 │       │   ├── Our Team  (simple_page)
 │       │   │   ├── Alice Schmidt  (team_member)
@@ -98,101 +94,126 @@ Root/
 │       │   └── Portal Users & Intranets     (blog_post, draft — Written)
 │       ├── Products  (product_category)
 │       │   ├── Software  (product_category)
-│       │   │   ├── Marble CMS Pro   (product)
-│       │   │   ├── Marble Analytics (product)
-│       │   │   └── Marble Headless  (product)
+│       │   │   ├── Marble CMS Pro
+│       │   │   ├── Marble Analytics
+│       │   │   └── Marble Headless
 │       │   └── Services  (product_category)
-│       │       ├── Implementation   (product)
-│       │       ├── Support          (product)
-│       │       └── Training         (product)
+│       │       ├── Implementation
+│       │       ├── Support
+│       │       └── Training
 │       ├── Contact  (contact_form)
 │       └── Intranet  (intranet_page)        ← portal-auth gated
-│           ├── Internal News  (intranet_page)
-│           │   ├── Q1 2025 Results
+│           ├── Internal News
+│           │   ├── Q1 Results
 │           │   └── New Vienna Office
-│           ├── Documents      (intranet_page)
-│           └── Team Directory (intranet_page)
+│           ├── Documents
+│           └── Team Directory
 └── Settings/
-    └── Site Settings  (site_settings)
+    └── Site Settings  (site_settings)        ← branding, SEO, social, footer
 ```
 
-The two draft blog posts demonstrate the **Blog Editorial Workflow** (Written → In Review → Approved → published) with reject-with-comment support.
+Two draft blog posts demonstrate the **Blog Editorial Workflow**: Written → In Review → Approved → Published, with per-step permissions, deadline tracking, and reject-with-comment.
+
+---
 
 ## Project Structure
 
 ```
 app/Http/Controllers/
-  FrontController.php        ← test route helper
-  SearchController.php       ← GET /search full-text search
-routes/web.php               ← /search route + Marble::routes() catch-all
+  FrontController.php        ← /marble-test/{id} dev helper (load item by ID)
+  SearchController.php       ← GET /search full-text search across item_values
+
+routes/web.php               ← /search + Marble::routes() catch-all
+
 resources/views/
-  layouts/frontend.blade.php ← sticky header, 3-level CSS dropdown nav,
-                               search bar, portal user indicator, dark footer
+  layouts/
+    frontend.blade.php       ← sticky header, 3-level CSS dropdown nav,
+                                search bar, portal user indicator, dark footer
   marble-pages/
-    home.blade.php            ← hero, feature grid, blog preview, product preview
+    home.blade.php            ← hero, feature grid, blog preview, product preview, CTA
     simple_page.blade.php     ← generic page with breadcrumbs + child grid
-    blog_index.blade.php      ← blog post listing
+    blog_index.blade.php      ← post listing sorted by publish date
     blog_post.blade.php       ← post detail with prev/next navigation
-    product_category.blade.php← subcategory grid + product cards
-    product.blade.php         ← product detail with sidebar pricing card
-    team_member.blade.php     ← profile with bio and team sidebar
-    intranet_page.blade.php   ← portal-auth gate + sidebar nav when logged in
-    contact_form.blade.php    ← form + contact info sidebar
-    search.blade.php          ← search results with keyword highlighting
+    product_category.blade.php← subcategory grid + product cards with feature list
+    product.blade.php         ← detail with sidebar pricing card + related products
+    team_member.blade.php     ← profile with photo, bio, LinkedIn, team sidebar
+    intranet_page.blade.php   ← portal-auth gate; sidebar nav tree when logged in
+    contact_form.blade.php    ← form with contact info sidebar
+    search.blade.php          ← results with keyword highlighting
+
 config/marble.php             ← CMS configuration
 packages/marble/admin/        ← the CMS package (git submodule)
 ```
 
+---
+
 ## Frontend Templates
 
-Marble resolves URL slugs to Items and renders Blade views from `resources/views/marble-pages/`. The view filename matches the blueprint identifier:
+Marble resolves URL slugs to Items and renders Blade views from `resources/views/marble-pages/`. The filename matches the blueprint identifier:
 
 ```
 marble-pages/{blueprint_identifier}.blade.php
 ```
 
-Each view receives an `$item` variable:
+Each view receives `$item`:
 
 ```blade
 @extends('layouts.frontend')
 
 @section('content')
-    <h1>{{ $item->value('name') }}</h1>
+    <h1>{{ $item->value('title') }}</h1>
     {!! $item->value('content') !!}
 
     @foreach(\Marble\Admin\Facades\Marble::children($item) as $child)
-        <a href="{{ \Marble\Admin\Facades\Marble::url($child) }}">{{ $child->name() }}</a>
+        <a href="{{ \Marble\Admin\Facades\Marble::url($child) }}">
+            {{ $child->name() }}
+        </a>
     @endforeach
 @endsection
 ```
 
-The layout reads all site-wide values (name, logo, meta tags, social links, copyright) from `Marble::settings()` automatically — no hardcoded strings.
+The layout reads all site-wide values (name, logo, meta tags, social links, copyright) from `Marble::settings()` — no hardcoded strings.
 
-## Key Features Demonstrated
+---
 
-| Feature | Where |
-|---|---|
-| 3-level CSS dropdown navigation | Layout header (`Marble::navigation(null, 3)`) |
+## Features Demonstrated
+
+| Feature | Where to find it |
+|---------|-----------------|
+| 3-level CSS dropdown navigation | Layout header — `Marble::navigation(null, 3)` |
 | Full-text search | `GET /search?q=…` → `SearchController` |
+| Translation fallback | Edit any item in German/Slovak — untranslated fields fall back to English |
+| Editorial workflow | Blog posts: Written → In Review → Approved; reject-with-comment at each step |
+| Workflow deadlines | Configured on "In Review" step; overdue badge in item sidebar |
 | Portal user auth | `/portal/login` — `marble.portal.auth` middleware |
-| Intranet / gated content | `intranet_page` blueprint + `Marble::isPortalAuthenticated()` |
-| Editorial workflow | Blog posts: Written → In Review → Approved |
-| Draft preview | Token-gated public URL for unpublished items |
-| Marble Debugbar | Floating panel on frontend when admin is logged in (`MARBLE_DEBUGBAR=true`) |
-| Headless REST API | `GET /api/marble/items/{blueprint}` with token auth |
-| Contact forms | `contact_form` blueprint with `is_form` enabled |
+| Intranet / gated content | `intranet_page` — shows login prompt unless portal-authenticated |
+| Draft preview | Generate a shareable token URL for unpublished items from the sidebar |
+| A/B Testing | Assign a Variant B to any item; track impression split in the sidebar widget |
+| Content Bundles | Group items → publish or roll back as one atomic operation |
+| Item subscriptions | Watch any item; receive in-app notifications on changes |
+| Content Relations Graph | D3.js force-directed graph of item connections — linked from item sidebar |
+| Inline children | `team_member` items as accordion panels inside "Our Team" |
+| Contact forms | `contact_form` blueprint with `is_form` + `<x-marble::marble-form>` |
+| Smart crops | Named crop presets (hero, thumbnail) — `$media->crop('hero')` |
+| Headless REST API | `GET /api/marble/items/{blueprint}` with Bearer token |
+| Marble Debugbar | Floating debug panel on frontend — enable with `MARBLE_DEBUGBAR=true` |
+| Admin Themes | Win98 theme selectable per user in profile settings |
+| Webhooks | HTTP callbacks on item.created / saved / published / deleted |
+
+---
 
 ## Portal Users
 
-The Intranet section requires a portal login. Portal users are separate from CMS admin users and are managed under **System → Portal Users** in the admin.
+The Intranet section requires a portal login. Portal users are managed under **System → Portal Users** in the admin — they are entirely separate from admin users.
 
-Use the `marble.portal.auth` middleware to protect any route:
+Protect any route with middleware:
 
 ```php
-Route::get('/members', MembersController::class)->middleware('marble.portal.auth');
+Route::get('/members', MembersController::class)
+    ->middleware('marble.portal.auth');
 ```
 
-Or check inline in Blade:
+Check auth in Blade:
 
 ```blade
 @if(\Marble\Admin\Facades\Marble::isPortalAuthenticated())
@@ -200,9 +221,13 @@ Or check inline in Blade:
 @endif
 ```
 
+Enable self-registration by setting `portal_registration = true` in `config/marble.php`.
+
+---
+
 ## Contact Forms
 
-The `contact_form` blueprint has **Is Form** enabled. Submissions are collected in the database and appear in the admin under the item's edit view.
+The `contact_form` blueprint has **Is Form** enabled. Submissions are stored in the database and visible in the admin under the item's edit view. Notification emails go to the addresses configured per item.
 
 ```blade
 <x-marble::marble-form :item="$item">
@@ -210,36 +235,40 @@ The `contact_form` blueprint has **Is Form** enabled. Submissions are collected 
 </x-marble::marble-form>
 ```
 
+---
+
 ## Useful Commands
 
 ```bash
-# Wipe and re-seed
+# Wipe and re-seed with full demo content
 docker compose exec app php artisan migrate:fresh --seed
-
-# Health check
-docker compose exec app php artisan marble:doctor
 
 # Re-publish admin assets after package updates
 docker compose exec app php artisan vendor:publish --tag=marble-assets --force
 
-# Process scheduled publish/expire times
+# Health check
+docker compose exec app php artisan marble:doctor
+
+# Process scheduled publish/expire
 docker compose exec app php artisan marble:schedule-publish
 
-# Prune old activity log + notifications
-docker compose exec app php artisan marble:prune
-
-# Check workflow deadlines and notify overdue steps
+# Notify overdue workflow steps
 docker compose exec app php artisan marble:workflow-deadlines
 
-# Clear blueprint icon picker cache (auto-expires after 24h)
+# Prune old activity log + read notifications
+docker compose exec app php artisan marble:prune
+
+# Clear blueprint icon picker cache
 docker compose exec app php artisan marble:clear-icon-cache
 
-# Interactive blueprint generator
+# Interactive blueprint + Blade view generator
 docker compose exec app php artisan marble:make-blueprint
 
-# Clear compiled views after Blade changes
+# Clear compiled Blade views
 docker compose exec app php artisan view:clear
 ```
+
+---
 
 ## License
 
