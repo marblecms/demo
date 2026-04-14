@@ -2,6 +2,9 @@
 
 <table>
 <tr>
+  <td width="100%" colspan="3"><img src="Screenshot7.png" alt="Demo Website"></td>
+</tr>
+<tr>
   <td width="33%"><img src="Screenshot1.png" alt="Dashboard"></td>
   <td width="33%"><img src="Screenshot2.png" alt="Item edit"></td>
   <td width="33%"><img src="Screenshot3.png" alt="Blueprint editor"></td>
