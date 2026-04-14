@@ -25,18 +25,7 @@
 @endphp
 
 {{-- Breadcrumb --}}
-<nav class="breadcrumb">
-    <a href="/">Home</a>
-    <span class="breadcrumb-sep">/</span>
-    @if($parent && $parent->blueprint?->identifier === 'product_category')
-        <a href="{{ $parentUrl }}">{{ $parent->name() }}</a>
-        <span class="breadcrumb-sep">/</span>
-    @else
-        <a href="{{ $parentUrl }}">Products</a>
-        <span class="breadcrumb-sep">/</span>
-    @endif
-    <span>{{ $item->name() }}</span>
-</nav>
+<x-breadcrumb :item="$item" />
 
 <div class="cat-header">
     @if($icon)<div class="cat-icon">{{ $icon }}</div>@endif

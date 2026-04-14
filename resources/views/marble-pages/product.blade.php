@@ -32,17 +32,7 @@
 @endphp
 
 {{-- Breadcrumb --}}
-<nav class="breadcrumb">
-    <a href="/">Home</a>
-    <span class="breadcrumb-sep">/</span>
-    <a href="/products">Products</a>
-    @if($parent && $parent->blueprint?->identifier === 'product_category')
-        <span class="breadcrumb-sep">/</span>
-        <a href="{{ $parentUrl }}">{{ $parent->name() }}</a>
-    @endif
-    <span class="breadcrumb-sep">/</span>
-    <span>{{ $item->name() }}</span>
-</nav>
+<x-breadcrumb :item="$item" />
 
 <div class="product-detail">
     <div class="product-detail-main">

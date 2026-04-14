@@ -17,43 +17,42 @@
         ->values();
 @endphp
 
-<div class="blog-header">
-    <h1>{{ $item->name() }}</h1>
-    @if($intro)<p class="blog-intro">{{ $intro }}</p>@endif
+<div class="blog-index-header">
+    <div class="wrap">
+        <x-breadcrumb :item="$item" />
+        <h1>{{ $item->name() }}</h1>
+        @if($intro)<p class="section-sub">{{ $intro }}</p>@endif
+    </div>
 </div>
 
-@if($posts->isEmpty())
-    <div class="content-card">
-        <p style="color:#999;text-align:center;padding:40px 0">No posts published yet.</p>
-    </div>
-@else
-    <div class="blog-list">
-        @foreach($posts as $post)
-            @php
-                $postUrl  = \Marble\Admin\Facades\Marble::url($post);
-                $teaser   = $post->value('teaser');
-                $author   = $post->value('author');
-                $pubDate  = $post->value('publish_date');
-            @endphp
-            <article class="blog-list-item">
-                <div class="blog-list-meta">
-                    @if($pubDate)
-                        <time>{{ \Carbon\Carbon::parse($pubDate)->format('F j, Y') }}</time>
-                    @endif
-                    @if($author)
-                        <span class="blog-list-author">by {{ $author }}</span>
-                    @endif
-                </div>
-                <h2 class="blog-list-title">
-                    <a href="{{ $postUrl }}">{{ $post->name() }}</a>
-                </h2>
-                @if($teaser)
-                    <p class="blog-list-teaser">{{ Str::limit($teaser, 200) }}</p>
-                @endif
-                <a href="{{ $postUrl }}" class="read-more-link">Read full article →</a>
-            </article>
-        @endforeach
-    </div>
-@endif
+<div class="wrap" style="padding-top:48px;padding-bottom:80px">
+    @if($posts->isEmpty())
+        <p style="color:#999;padding:40px 0;text-align:center">No posts published yet.</p>
+    @else
+        <div class="blog-index-list">
+            @foreach($posts as $post)
+                @php
+                    $postUrl = \Marble\Admin\Facades\Marble::url($post);
+                    $teaser  = $post->value('teaser');
+                    $author  = $post->value('author');
+                    $pubDate = $post->value('publish_date');
+                @endphp
+                <article class="blog-index-post">
+                    <div>
+                        <div class="blog-index-meta">
+                            @if($pubDate){{ \Carbon\Carbon::parse($pubDate)->format('F j, Y') }}@endif
+                            @if($author) · {{ $author }}@endif
+                        </div>
+                        <h2 class="blog-index-title">
+                            <a href="{{ $postUrl }}">{{ $post->name() }}</a>
+                        </h2>
+                        @if($teaser)<p class="blog-index-teaser">{{ Str::limit($teaser, 200) }}</p>@endif
+                    </div>
+                    <a href="{{ $postUrl }}" class="blog-index-link">Read →</a>
+                </article>
+            @endforeach
+        </div>
+    @endif
+</div>
 
 @endsection

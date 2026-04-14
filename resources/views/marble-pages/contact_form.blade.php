@@ -8,20 +8,10 @@
     $subject  = $item->value('subject') ?: $item->name();
     $message  = $item->value('message');
 
-    // Breadcrumb
-    $parent   = $item->parent_id ? \Marble\Admin\Models\Item::find($item->parent_id) : null;
 @endphp
 
 {{-- Breadcrumb --}}
-<nav class="breadcrumb">
-    <a href="/">Home</a>
-    @if($parent)
-        <span class="breadcrumb-sep">/</span>
-        <a href="{{ \Marble\Admin\Facades\Marble::url($parent) }}">{{ $parent->name() }}</a>
-    @endif
-    <span class="breadcrumb-sep">/</span>
-    <span>{{ $subject }}</span>
-</nav>
+<x-breadcrumb :item="$item" />
 
 <div class="contact-layout">
     <div class="contact-main">

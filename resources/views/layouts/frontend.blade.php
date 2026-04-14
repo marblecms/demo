@@ -120,32 +120,11 @@
                        value="{{ request('q') }}"
                        autocomplete="off">
             </form>
-
-            <div class="portal-indicator">
-                @if($isPortalAuth && $portalUser)
-                    <span class="portal-badge">
-                        <span class="portal-badge-avatar">{{ strtoupper(substr($portalUser->email, 0, 1)) }}</span>
-                        {{ explode('@', $portalUser->email)[0] }}
-                    </span>
-                    <form method="POST" action="{{ route('marble.portal.logout') }}" style="margin:0">
-                        @csrf
-                        <button type="submit" class="portal-login-btn" style="background:rgba(255,60,60,.2);border-color:rgba(255,100,100,.3)">
-                            Sign out
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('marble.portal.login') }}" class="portal-login-btn">
-                        &#128100; Sign in
-                    </a>
-                @endif
-            </div>
         </div>
     </div>
 </header>
 
-<main class="site-main">
-    @yield('content')
-</main>
+<main class="site-main {{ $__env->hasSection('hero') ? 'has-hero' : '' }}">@yield('content')</main>
 
 <footer class="site-footer">
     <div class="site-footer-inner">
@@ -171,7 +150,6 @@
                     @if($instagram)<li><a href="{{ $instagram }}" target="_blank" rel="noopener">Instagram</a></li>@endif
                     @if($facebook)<li><a href="{{ $facebook }}"  target="_blank" rel="noopener">Facebook</a></li>@endif
                     @if($linkedin)<li><a href="{{ $linkedin }}"  target="_blank" rel="noopener">LinkedIn</a></li>@endif
-                    <li><a href="{{ route('marble.portal.login') }}">Member Login</a></li>
                 </ul>
             </div>
         </div>
@@ -187,5 +165,24 @@
 </footer>
 
 @stack('scripts')
+<script>
+(function () {
+    var header = document.querySelector('.site-header');
+    var hero   = document.getElementById('hero');
+    if (!header || !hero) return;
+
+    function update() {
+        var heroBottom = hero.getBoundingClientRect().bottom;
+        if (heroBottom > 0) {
+            header.classList.add('is-hero');
+        } else {
+            header.classList.remove('is-hero');
+        }
+    }
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+})();
+</script>
 </body>
 </html>
