@@ -840,6 +840,94 @@ class MarbleDemoSeeder extends MarbleSeeder
             . '<p>Only after legal clearance can the article be published. Every transition is logged with the user who performed it and a timestamp. If an article is rejected, the comment thread shows exactly what needs to change.</p>'
         );
 
+        $post4 = $this->item($blogPost, $blog->id, 3, null, false);
+        $this->vals($post4, [
+            'name'         => 'Building Marble Plugins',
+            'slug'         => 'building-marble-plugins',
+            'author'       => 'The Marble Team',
+            'publish_date' => '2026-04-01',
+            'teaser'       => 'Marble now has a first-class plugin system. Learn how to build installable plugins that hook into the admin panel without touching any core files.',
+        ]);
+        $this->html($post4, $blogPost, 'content',
+            '<p>Since v1.4, Marble has a first-class plugin system. Plugins are standard Laravel packages with <code>"type": "marble-plugin"</code> in their <code>composer.json</code>. They hook into the admin panel using the <code>MarbleAdmin</code> facade — no core files need to be modified.</p>'
+            . '<h2>The MarbleAdmin facade</h2>'
+            . '<p>All plugin integration happens from your ServiceProvider\'s <code>boot()</code> method:</p>'
+            . '<pre><code>use Marble\Admin\Facades\MarbleAdmin;'
+            . "\n\nMarbleAdmin::addNavItem('content', 'Orders', 'myplugin.orders', 'cart', ['myplugin.*']);"
+            . "\nMarbleAdmin::addTopNavSection('shop', ["
+            . "\n    'label'    => 'Shop',"
+            . "\n    'icon'     => 'cart',"
+            . "\n    'patterns' => ['marble.shop.*'],"
+            . "\n    'items'    => ["
+            . "\n        ['label' => 'Overview', 'route' => 'marble.shop.index', 'icon' => 'chart_bar'],"
+            . "\n        ['label' => 'Orders',   'route' => 'marble.shop.orders', 'icon' => 'cart'],"
+            . "\n    ],"
+            . "\n]);"
+            . "\nMarbleAdmin::addAsset('css', asset('vendor/myplugin/plugin.css'));"
+            . "\nMarbleAdmin::addCkEditorPlugin('myplugin', asset('vendor/myplugin/ckeditor/'), ['MyButton']);"
+            . '</code></pre>'
+            . '<h2>Plugin discovery</h2>'
+            . '<p>Plugins are auto-discovered via Laravel\'s standard package discovery (<code>extra.laravel.providers</code> in <code>composer.json</code>). The admin panel\'s <strong>System → Plugins</strong> page searches Packagist for all packages with <code>type: marble-plugin</code> and enriches results with the <a href="https://github.com/marblecms/plugins">community registry</a>, which marks packages as verified and featured.</p>'
+            . '<h2>The ecommerce plugin</h2>'
+            . '<p>The first official plugin is <strong>marblecms/marble-ecommerce</strong>: products as Marble Items, a session-based cart, Stripe Checkout, and a full Shop admin section with orders and discount codes. Install it with:</p>'
+            . '<pre><code>composer require marblecms/marble-ecommerce'
+            . "\nphp artisan marble:ecommerce:install"
+            . '</code></pre>'
+            . '<p>See the <a href="https://github.com/marblecms/plugin-ecommerce">plugin repository</a> for the full API documentation.</p>'
+        );
+
+        $post5 = $this->item($blogPost, $blog->id, 4, null, false);
+        $this->vals($post5, [
+            'name'         => 'Two-Factor Authentication for the Admin',
+            'slug'         => 'two-factor-authentication',
+            'author'       => 'The Marble Team',
+            'publish_date' => '2026-04-05',
+            'teaser'       => 'Marble v1.4 adds TOTP-based two-factor authentication for admin users. Enable it per user in seconds, with backup codes and full Authenticator app compatibility.',
+        ]);
+        $this->html($post5, $blogPost, 'content',
+            '<p>Marble v1.4 ships with TOTP-based two-factor authentication for admin users. It works with any standard Authenticator app (Google Authenticator, Authy, 1Password, etc.) and is fully opt-in per user.</p>'
+            . '<h2>Enabling 2FA</h2>'
+            . '<ol>'
+            . '<li>Go to your user profile in the admin (top-right avatar menu).</li>'
+            . '<li>Scroll to the <strong>Two-Factor Authentication</strong> section and click <strong>Set up 2FA</strong>.</li>'
+            . '<li>Scan the QR code with your Authenticator app.</li>'
+            . '<li>Enter the 6-digit code to confirm and activate.</li>'
+            . '<li>Save your backup codes somewhere safe — each can be used once if you lose access to your device.</li>'
+            . '</ol>'
+            . '<h2>Logging in with 2FA</h2>'
+            . '<p>Once enabled, after entering your email and password you will be redirected to a second screen asking for your current 6-digit code. Enter it and you\'re in. If you\'ve lost your device, enter one of your backup codes instead.</p>'
+            . '<h2>Disabling 2FA</h2>'
+            . '<p>Go back to your user profile and click <strong>Disable 2FA</strong>. Admin users with the right permissions can also manage 2FA settings for other users from the Users section.</p>'
+        );
+
+        $post6 = $this->item($blogPost, $blog->id, 5, null, false);
+        $this->vals($post6, [
+            'name'         => 'AI Writing Assistant in the Editor',
+            'slug'         => 'ai-writing-assistant',
+            'author'       => 'The Marble Team',
+            'publish_date' => '2026-04-10',
+            'teaser'       => 'Marble v1.4 adds an AI writing assistant directly inside the CKEditor rich text editor. Connect OpenAI or Anthropic and generate, expand, or rewrite content without leaving the admin.',
+        ]);
+        $this->html($post6, $blogPost, 'content',
+            '<p>Marble v1.4 adds an AI writing assistant to every rich text field in the admin. Click the <strong>AI Assist</strong> button in the CKEditor toolbar, describe what you want, and the result is inserted directly into the editor.</p>'
+            . '<h2>Setup</h2>'
+            . '<p>Go to <strong>System → Configuration</strong> and configure your AI provider:</p>'
+            . '<ul>'
+            . '<li><strong>Provider</strong> — OpenAI or Anthropic</li>'
+            . '<li><strong>API Key</strong> — your OpenAI or Anthropic API key</li>'
+            . '<li><strong>Model</strong> — leave blank for the default (<code>gpt-4o</code> / <code>claude-sonnet-4-6</code>), or specify any model your account has access to</li>'
+            . '</ul>'
+            . '<h2>Using the assistant</h2>'
+            . '<p>With any HTML field open in the editor:</p>'
+            . '<ol>'
+            . '<li>Click the <strong>AI Assist</strong> button in the toolbar (sparkle icon).</li>'
+            . '<li>Describe what you want — "Write an intro paragraph about our refund policy", "Expand this into a full section", "Rewrite this to be more concise".</li>'
+            . '<li>The assistant sees the current editor content as context, so it can expand or rewrite existing copy.</li>'
+            . '<li>Click <strong>Insert</strong> to place the result into the editor, where you can edit it further.</li>'
+            . '</ol>'
+            . '<p>The assistant outputs clean HTML (<code>&lt;p&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;ul&gt;</code>, etc.) — no markdown, no code fences, ready to publish.</p>'
+        );
+
         // ── Changelog ─────────────────────────────────────────────────────────
         $changelog = $this->item($docsSection, $startpage->id, 3, null, true);
         $this->vals($changelog, [
@@ -848,7 +936,32 @@ class MarbleDemoSeeder extends MarbleSeeder
             'description' => 'A record of every Marble CMS release, with details of what was added, changed, and fixed.',
         ]);
 
-        $v01 = $this->item($changelogEntry, $changelog->id, 0, null, false);
+        $v14 = $this->item($changelogEntry, $changelog->id, 0, null, false);
+        $this->vals($v14, [
+            'name'         => 'v1.4 — Plugin API, Two-Factor Auth, AI Assistant',
+            'slug'         => 'v1-4',
+            'version'      => '1.4',
+            'release_date' => '2026-04-19',
+        ]);
+        $this->html($v14, $changelogEntry, 'content',
+            '<h2>Plugin API</h2>'
+            . '<p>Marble now has a first-class plugin system. Use the <code>MarbleAdmin</code> facade from your plugin\'s ServiceProvider to hook into the admin panel without modifying any core files. Methods: <code>addNavItem</code>, <code>addTopNavSection</code>, <code>addAsset</code>, <code>addCkEditorPlugin</code>. System → Plugins provides a searchable plugin marketplace backed by Packagist.</p>'
+            . '<h2>Two-Factor Authentication</h2>'
+            . '<p>TOTP-based 2FA for all admin users. Enable per user from the profile page with a QR code setup flow. Backup codes are generated on enable. Login redirects to the 2FA challenge automatically when enabled.</p>'
+            . '<h2>AI Writing Assistant</h2>'
+            . '<p>An AI Assist button in every CKEditor rich text toolbar. Supports OpenAI (GPT-4o) and Anthropic (Claude). Configure in System → Configuration. The assistant receives the current editor content as context and inserts clean HTML output directly into the editor.</p>'
+            . '<h2>Laravel Events</h2>'
+            . '<p>Marble now fires standard Laravel events: <code>ItemSaved</code>, <code>ItemPublished</code>, <code>ItemTrashed</code>, <code>PortalUserRegistered</code>, <code>PortalUserLoggedIn</code>, <code>MarbleFormSubmitted</code>. Listen from any ServiceProvider or EventServiceProvider.</p>'
+            . '<h2>System → Packages</h2>'
+            . '<p>The Export and Import pages have been merged into a single tabbed page under System → Packages.</p>'
+            . '<h2>Other</h2>'
+            . '<ul>'
+            . '<li><code>BlueprintInstaller</code> helper for idempotent blueprint + field setup in plugin install commands</li>'
+            . '<li>Laravel 13 support</li>'
+            . '</ul>'
+        );
+
+        $v01 = $this->item($changelogEntry, $changelog->id, 1, null, false);
         $this->vals($v01, [
             'name'         => 'v0.1 — Initial Release',
             'slug'         => 'v0-1-initial-release',
