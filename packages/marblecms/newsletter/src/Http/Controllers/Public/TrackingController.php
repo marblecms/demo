@@ -43,9 +43,19 @@ class TrackingController extends Controller
     public function click(string $token, string $encodedUrl)
     {
         $send = CampaignSend::where('token', $token)->first();
-        $url  = base64_decode($encodedUrl);
+        $url  = base64_decode($encodedUrl, true);
 
-        if ($send && $url) {
+        // Validate that the decoded URL is a proper http/https URL to prevent
+        // javascript: injection and open-redirect abuse
+        $safe = is_string($url)
+            && filter_var($url, FILTER_VALIDATE_URL)
+            && in_array(parse_url($url, PHP_URL_SCHEME), ['http', 'https'], true);
+
+        if (!$safe) {
+            $url = '/';
+        }
+
+        if ($send && $url !== '/') {
             CampaignClick::create([
                 'send_id'    => $send->id,
                 'url'        => $url,
@@ -54,6 +64,6 @@ class TrackingController extends Controller
             ]);
         }
 
-        return redirect($url ?: '/');
+        return redirect($url);
     }
 }

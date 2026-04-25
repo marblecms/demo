@@ -53,6 +53,11 @@ class SubscribeController extends Controller
 
         $redirectTo = $request->input('redirect', '/');
 
+        // Only allow relative paths to prevent open redirects
+        if (!is_string($redirectTo) || !str_starts_with($redirectTo, '/') || str_starts_with($redirectTo, '//')) {
+            $redirectTo = '/';
+        }
+
         return redirect($redirectTo)->with(
             'newsletter_subscribed',
             config('newsletter.double_opt_in', true)

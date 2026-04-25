@@ -5,7 +5,7 @@ use MarbleCms\Newsletter\Http\Controllers\Public\SubscribeController;
 use MarbleCms\Newsletter\Http\Controllers\Public\TrackingController;
 
 Route::prefix('newsletter')->group(function () {
-    Route::post('subscribe',                    [SubscribeController::class, 'subscribe'])->name('newsletter.subscribe');
+    Route::post('subscribe',                    [SubscribeController::class, 'subscribe'])->name('newsletter.subscribe')->middleware('throttle:10,1');
     Route::get('confirm/{token}',               [SubscribeController::class, 'confirm'])->name('newsletter.confirm');
     Route::get('unsubscribe/{token}',           [SubscribeController::class, 'showUnsubscribe'])->name('newsletter.unsubscribe.show');
     Route::post('unsubscribe/{token}',          [SubscribeController::class, 'unsubscribe'])->name('newsletter.unsubscribe');

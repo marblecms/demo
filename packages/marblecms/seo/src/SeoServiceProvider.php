@@ -5,6 +5,7 @@ namespace MarbleCms\Seo;
 use Illuminate\Support\ServiceProvider;
 use Marble\Admin\Facades\MarbleAdmin;
 use Marble\Admin\Events\ItemPublished;
+use Marble\Admin\Events\ItemTrashed;
 
 class SeoServiceProvider extends ServiceProvider
 {
@@ -58,9 +59,12 @@ class SeoServiceProvider extends ServiceProvider
 
     protected function registerEventListeners(): void
     {
-        \Illuminate\Support\Facades\Event::listen(ItemPublished::class, function () {
+        $invalidate = function () {
             app(Services\SitemapService::class)->invalidate();
-        });
+        };
+
+        \Illuminate\Support\Facades\Event::listen(ItemPublished::class, $invalidate);
+        \Illuminate\Support\Facades\Event::listen(ItemTrashed::class, $invalidate);
     }
 
     protected function registerPublishables(): void
