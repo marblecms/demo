@@ -1,0 +1,24 @@
+{
+    "name": "marblecms/marble-newsletter",
+    "description": "Newsletter plugin for Marble CMS: subscribers, lists, campaigns, open/click tracking.",
+    "type": "marble-plugin",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "marble/admin": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "MarbleCms\\Newsletter\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["MarbleCms\\Newsletter\\NewsletterServiceProvider"]
+        },
+        "marble-plugin": {
+            "name": "Marble Newsletter",
+            "description": "Double opt-in newsletter with subscriber lists, campaigns, and open/click tracking."
+        }
+    }
+}

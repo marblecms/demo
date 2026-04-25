@@ -1,0 +1,24 @@
+{
+    "name": "marblecms/marble-seo",
+    "description": "SEO plugin for Marble CMS: meta tags, sitemap, robots.txt, JSON-LD.",
+    "type": "marble-plugin",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "marble/admin": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "MarbleCms\\Seo\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["MarbleCms\\Seo\\SeoServiceProvider"]
+        },
+        "marble-plugin": {
+            "name": "Marble SEO",
+            "description": "Per-item SEO metadata, XML sitemap, robots.txt, and structured data for Marble CMS."
+        }
+    }
+}
